@@ -43,6 +43,7 @@
     "chai": "^4.3.4",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
+    "cz-emoji": "^1.3.1",
     "eslint-config-trybe-backend": "^1.0.4",
     "frisby": "^2.1.2",
     "husky": "^8.0.1",
@@ -61,7 +62,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "cz-emoji"
     }
   }
 }
