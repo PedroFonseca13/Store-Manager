@@ -12,4 +12,16 @@ const getAll = async () => {
   return sales;
 };
 
-module.exports = { getAll };
+const findById = async (saleID) => {
+  const query = `
+  SELECT sp.product_id, sp.quantity, sales.date
+    FROM sales_products AS sp
+    INNER JOIN sales
+    ON sp.sale_id = sales.id
+    WHERE sales.id=?`;
+  const [sale] = await connection.execute(query, [saleID]);
+
+  return sale;
+};
+
+module.exports = { getAll, findById };

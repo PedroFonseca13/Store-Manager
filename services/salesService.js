@@ -13,6 +13,19 @@ const getAll = async () => {
   return result;
 };
 
+const findById = async (id) => {
+  const sale = await salesModel.findById(id);
+
+  const result = sale.map((saleData) => ({
+    productId: saleData.product_id,
+    quantity: saleData.quantity,
+    date: saleData.date,
+  }));
+
+  return result;
+};
+
 module.exports = {
   getAll,
+  findById,
 };
