@@ -5,5 +5,6 @@ const productsMiddleware = require('../middleware/productsMiddleware');
 router.get('/products', productsController.getAll);
 router.get('/products/:id', productsController.findById);
 router.post('/products', productsMiddleware.validateName, productsController.registerProduct);
+router.put('/products/:id', productsMiddleware.validateName, productsController.updateProduct);
 
 module.exports = router;

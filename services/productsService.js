@@ -25,8 +25,22 @@ const registerProduct = async (name) => {
   };
 };
 
+const updateProduct = async (id, name) => {
+  const searchProduct = await productsModel.findById(id);
+
+  if (searchProduct.length === 0) throw errorHandler(404, 'Product not found');
+
+  await productsModel.updateProduct(id, name);
+
+  return {
+    id,
+    name,
+  };
+};
+
 module.exports = {
   getAll,
   findById,
   registerProduct,
+  updateProduct,
 };

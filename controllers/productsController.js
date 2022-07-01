@@ -32,8 +32,23 @@ const registerProduct = async (req, res) => {
   return res.status(409).json({ message: 'Product already exists' });
 };
 
+const updateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const product = await productsService.updateProduct(id, name);
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log(error.message);
+
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   findById,
   registerProduct,
+  updateProduct,
 };
