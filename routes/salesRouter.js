@@ -5,5 +5,6 @@ const salesMiddleware = require('../middleware/salesMiddleware');
 router.get('/sales', salesController.getAll);
 router.get('/sales/:id', salesController.findById);
 router.post('/sales', salesMiddleware.validateSale, salesController.addSale);
+router.delete('/sales/:id', salesController.deleteSale);
 
 module.exports = router;
