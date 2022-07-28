@@ -22,23 +22,21 @@ const findById = async (req, res) => {
   }
 };
 
-const addSale = async (req, res) => {
-  const sale = req.body;
-  const saleData = await salesService.newSales(sale);
-
-  return res.status(201).json(saleData);
-};
-
-const deleteSale = async (req, res) => {
+const addSale = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const sale = req.body;
+    const saleData = await salesService.newSales(sale);
 
-    await salesService.deleteSale(id);
+    console.log(saleData);
 
-    return res.status(204).json();
+    if (saleData.error) {
+      res.status(404).json({ message: 'Product not found' });
+    }
+
+    return res.status(201).json(saleData);
   } catch (error) {
-    handleError(error, req, res);
+    next(error);
   }
 };
 
-module.exports = { getAll, findById, addSale, deleteSale };
+module.exports = { getAll, findById, addSale };
