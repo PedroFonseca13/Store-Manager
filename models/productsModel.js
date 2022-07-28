@@ -35,4 +35,10 @@ const deleteProduct = async (id) => {
   return result;
 };
 
-module.exports = { getAll, findById, registerProduct, updateProduct, deleteProduct };
+module.exports = {
+  getAll,
+  findById,
+  registerProduct,
+  updateProduct,
+  deleteProduct,
+};
