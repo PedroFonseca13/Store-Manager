@@ -1,6 +1,8 @@
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 
+const handleError = (status, message) => ({ status, message });
+
 const getAll = async () => {
   const sales = await salesModel.getAll();
 
@@ -47,8 +49,20 @@ const newSales = async (sales) => {
   return dataObj;
 };
 
+const deleteSale = async (id) => {
+  const sale = await salesModel.findById(id);
+
+  if (sale.length === 0) {
+    throw handleError(404, 'Sale not found');
+  }
+
+  const row = await salesModel.deleteSale(id);
+  return row;
+};
+
 module.exports = {
   getAll,
   findById,
   newSales,
+  deleteSale,
 };

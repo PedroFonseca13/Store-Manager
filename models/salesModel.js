@@ -39,7 +39,14 @@ const registerSales = async (saleId, productId, quantity) => {
   return sale;
 };
 
-module.exports = { getAll, findById, insertData, registerSales };
+const deleteSale = async (id) => {
+  const query = 'DELETE FROM sales WHERE id = ?';
+  const [row] = await connection.execute(query, [id]);
+
+  return row;
+};
+
+module.exports = { getAll, findById, insertData, registerSales, deleteSale };
 
 // insertData().then((data) => {
 //   console.log(data);
