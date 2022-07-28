@@ -49,6 +49,26 @@ const newSales = async (sales) => {
   return dataObj;
 };
 
+const updateSales = async (data, id) => {
+  const saleData = await salesModel.findById(id);
+
+  console.log(saleData);
+
+  if (saleData.length === 0) return { error: { code: 'notFound', message: 'Product not found' } };
+
+  await Promise.all(data
+    .map((sale) => salesModel.registerSales(id, sale.productId, sale.quantity)));
+
+  const dataObj = {
+    saleId: id,
+    itemsUpdated: data,
+  };
+
+  console.log(dataObj);
+
+  return dataObj;
+};
+
 const deleteSale = async (id) => {
   const sale = await salesModel.findById(id);
 
@@ -64,5 +84,6 @@ module.exports = {
   getAll,
   findById,
   newSales,
+  updateSales,
   deleteSale,
 };

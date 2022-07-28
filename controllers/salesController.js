@@ -41,6 +41,21 @@ const addSale = async (req, res, next) => {
   }
 };
 
+const updateSales = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { data } = req.body;
+
+    const result = await salesService.updateSales(id, data);
+
+    if (result.error) return res.status(404).json({ message: 'Sale not found' });
+
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const deleteSale = async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,4 +70,4 @@ const deleteSale = async (req, res) => {
   }
 };
 
-module.exports = { getAll, findById, addSale, deleteSale };
+module.exports = { getAll, findById, addSale, updateSales, deleteSale };
