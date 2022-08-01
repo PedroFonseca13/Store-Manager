@@ -7,7 +7,7 @@ const productsController = require('../../../controllers/productsController');
 
 describe('Testes do controller', () => {
 
-  describe('Testa se o mock é válido', () => {
+  describe('Testa a função getAll', () => {
 
     const products = [
       {
@@ -22,7 +22,6 @@ describe('Testes do controller', () => {
 
     const res = {};
     const req = {};
-    const next = () => { };
 
     before(() => {
       res.status = sinon.stub().returns(res)
@@ -36,7 +35,7 @@ describe('Testes do controller', () => {
     })
 
     it('Deve retornar um status 200', async () => {
-      await productsController.getAll(req, res, next);
+      await productsController.getAll(req, res);
       expect(res.status.calledWith(200)).to.be.equal(true);
       expect(res.json.calledWith(products)).to.be.equal(true);
     });
