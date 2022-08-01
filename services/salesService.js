@@ -49,19 +49,25 @@ const newSales = async (sales) => {
   return dataObj;
 };
 
-const updateSales = async (data, id) => {
-  const saleData = await salesModel.findById(id);
+const updateSales = async (id, sales) => {
+  const allProductsIds = await Promise.all(sales
+    .map((sale) => productsModel.findById(sale.productId)));
 
-  console.log(saleData);
+  const existId = allProductsIds.some((product) => product.length === 0);
 
-  if (saleData.length === 0) return { error: { code: 'notFound', message: 'Product not found' } };
+  if (existId) return { error: { code: 404, message: 'Product not found' } };
 
-  await Promise.all(data
-    .map((sale) => salesModel.registerSales(id, sale.productId, sale.quantity)));
+  const saleId = await salesModel.findById(id);
+
+  console.log(saleId);
+
+  if (saleId.length === 0) return { error: { code: 'notFound', message: 'Sale not found' } };
+
+  await Promise.all(sales.map((sale) => salesModel.updateSales(id, sale.productId, sale.quantity)));
 
   const dataObj = {
     saleId: id,
-    itemsUpdated: data,
+    itemsUpdated: sales,
   };
 
   console.log(dataObj);
