@@ -93,7 +93,7 @@ describe('Test layer services', () => {
 
     before(async () => {
       sinon.stub(productsModel, 'registerProduct').resolves(product)
-    })
+    });
 
     after(async () => {
       sinon.restore();
