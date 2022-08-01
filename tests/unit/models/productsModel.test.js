@@ -6,9 +6,8 @@ const productsModel = require('../../../models/productsModel');
 
 describe('Testes de productsModel', () => {
 
-  describe('Verifica se retorna todos os produtos.', () => {
-
-    const products = [
+  describe('Verificação do getAll', () => {
+    const produtcs = [
       {
         "id": 1,
         "name": "Martelo de Thor",
@@ -19,61 +18,74 @@ describe('Testes de productsModel', () => {
       }
     ];
 
-    beforeEach(async () => {
-      await sinon.stub(connection, 'execute').resolves(products)
+    before(async () => {
+      sinon.stub(connection, 'execute').returns([produtcs]);
     });
 
-    afterEach(async () => await connection.execute.restore());
-
-    it('Verifica se é um objeto.', async () => {
-      const result = await productsModel.getAll();
-      expect(result).to.be.a('object');
-    });
-  })
-
-  describe('Verifica se encontra o produto pelo ID.', () => {
-
-    describe('Procurando o produto.', () => {
-
-      const product = [{}];
-
-      beforeEach(async () => {
-        await sinon.stub(connection, 'execute').resolves(product);
-      });
-
-      afterEach(async () => await connection.execute.restore());
-
-      it('Deve retornar um objeto vazio.', async () => {
-        const result = await productsModel.findById('a')
-        expect(result).to.be.a('object')
-      });
+    after(async () => {
+      connection.execute.restore();
     })
 
-    describe('Verifica o retorno de um ID inexistente.', () => {
+    it('retorna um array de produtos', async () => {
+      const response = await productsModel.getAll();
+      expect(response).to.be.a('array');
+    })
+  });
 
-      const productByID = [{
-        "id": 1,
-        "name": "Martelo de Thor",
-      }];
+  describe('Verificação do findById', () => {
 
-      beforeEach(async () => {
-        await sinon.stub(connection, 'execute').resolves(productByID);
-      });
+    const product = {
+      id: '1',
+      name: 'Martelo de Thor'
+    }
 
-      afterEach(async () => await connection.execute.restore());
+    before(async () => {
+      sinon.stub(connection, 'execute').returns([[product]])
+    })
 
-      it('should be a object with a product', async () => {
-        const result = await productsModel.findById(1)
-        expect(result).to.be.a('object')
-      });
+    after(async () => {
+      connection.execute.restore();
+    })
 
-      it('should have a id and name with a product', async () => {
-        const result = await productsModel.findById(1)
-        expect(result).to.deep.equal({
-          "id": 1,
-          "name": "Martelo de Thor",
-        })
-      });
+    it('Retorna um objeto que representa o produto', async () => {
+
+      const response = await productsModel.findById(1);
+      expect(response).to.be.a('object')
+    })
+
+    it('deve disparar um erro caso o connection.query dispare um erro', () => {
+      sinon.stub(connection, 'query').rejects();
+      chai.expect(productsModel.findById(0)).to.eventually.be.rejected;
     });
+
+    it('deve retornar nada caso o connection.query retorne uma lista vazia', () => {
+      sinon.stub(connection, 'query').resolves([[]]);
+      chai.expect(productsModel.findById(0)).to.eventually.be.undefined;
+    });
+
+    it('deve retornar um objeto caso o connection.query retorne um item na lista', () => {
+
+    });
+  });
+
+  describe('Verificação do registerProduct', () => {
+    const product = {
+      id: '4',
+      name: 'Martelo de Thor'
+    }
+
+    before(async () => {
+      sinon.stub(connection, 'execute').returns([[product]])
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    })
+
+    it('Retorna um objeto que representa o produto', async () => {
+      const { name } = product
+      const response = await productsModel.registerProduct(name);
+      expect(response).to.be.a('object')
+    })
   });
 });

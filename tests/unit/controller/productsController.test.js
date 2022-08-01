@@ -24,22 +24,24 @@ describe('Testes do controller', () => {
     const req = {};
     const next = () => { };
 
-    beforeEach(async () => {
+    before(() => {
+      res.status = sinon.stub().returns(res)
+      res.json = sinon.stub().returns(products)
+
       sinon.stub(productsService, 'getAll').resolves(products);
-      res.status = sinon.stub().returns(res);
-      res.json = sinon.stub().returns();
-    });
+    })
 
-    afterEach(async () => {
-      productsService.getAll.restore();
-    });
+    after(() => {
+      sinon.restore()
+    })
 
-    it('should have status 200', async () => {
+    it('Deve retornar um status 200', async () => {
       await productsController.getAll(req, res, next);
       expect(res.status.calledWith(200)).to.be.equal(true);
+      expect(res.json.calledWith(products)).to.be.equal(true);
     });
 
-    it('should have return a json ', async () => {
+    it('Deve retornar um json ', async () => {
       await productsController.getAll(req, res, next);
       expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
     });
@@ -47,7 +49,7 @@ describe('Testes do controller', () => {
 
   describe('Test function findById', () => {
 
-    const productById = [
+    const product = [
       {
         "id": 1,
         "name": "Martelo de Thor",
@@ -58,26 +60,59 @@ describe('Testes do controller', () => {
     const req = {};
     const next = () => { };
 
-    beforeEach(async () => {
-      req.params = '1';
-      res.status = sinon.stub().returns(res);
-      res.json = sinon.stub().returns();
+    before(() => {
+      res.status = sinon.stub().returns(res)
+      res.json = sinon.stub().returns(product)
+      req.params = sinon.stub().returns(1)
 
-      await sinon.stub(productsService, 'findById').resolves(productById);
-    });
+      sinon.stub(productsService, 'findById').resolves(product);
+    })
 
-    afterEach(async () => {
-      await productsService.findById.restore();
-    });
+    after(() => {
+      sinon.restore()
+    })
 
-    it('should have status 200', async () => {
+    it('Deve retornar um status 200', async () => {
       await productsController.findById(req, res, next);
       expect(res.status.calledWith(200)).to.be.equal(true);
+      expect(res.json.calledWith(product)).to.be.equal(true);
     });
 
     it('Deve retonar um json', async () => {
       await productsController.findById(req, res, next);
       expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
     });
+  });
+
+  describe('Testa a função registerProduct', () => {
+    const product = [
+      {
+        id: '1',
+        name: 'Martelo de Thor'
+      },
+    ];
+
+    const req = {};
+    const res = {};
+    const next = () => { };
+
+
+    before(() => {
+      res.status = sinon.stub().returns(res)
+      res.json = sinon.stub().returns(product)
+      req.body = sinon.stub().returns()
+
+      sinon.stub(productsService, 'registerProduct').resolves(product);
+    })
+
+    after(() => {
+      sinon.restore()
+    })
+
+    it('its called the with de status code 200', async () => {
+      await productsController.registerProduct(req, res)
+      expect(res.status.calledWith(201)).to.be.equal(true);
+      expect(res.json.calledWith(product)).to.be.equal(true);
+    })
   });
 });
