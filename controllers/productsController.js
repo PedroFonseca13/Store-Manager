@@ -20,6 +20,7 @@ const findById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productsService.findById(id);
+    console.log(product);
 
     // if (product.message) {
     //   const error = errorHandler(product);
