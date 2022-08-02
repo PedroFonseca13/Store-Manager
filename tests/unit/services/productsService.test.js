@@ -32,11 +32,10 @@ describe('Teste de productsService', () => {
       expect(result).to.be.an('array')
     })
 
-    it('de objetos com propriedades "id", "name" e "quantity"', async () => {
+    it('de objetos com propriedades "id", "name"', async () => {
       const response = await productsService.getAll();
       expect(response[0]).to.have.a.property('id');
       expect(response[0]).to.have.a.property('name');
-      expect(response[0]).to.have.a.property('quantity');
     });
 
   });
