@@ -53,6 +53,8 @@ const deleteSale = async (id) => {
   const query = 'DELETE FROM sales WHERE id = ?';
   const [row] = await connection.execute(query, [id]);
 
+  if (row.affectedRows === 0) return { message: 'Product not found', status: 404 };
+
   return row;
 };
 

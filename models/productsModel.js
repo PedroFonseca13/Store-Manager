@@ -24,7 +24,6 @@ const updateProduct = async (id, name) => {
   const query = 'UPDATE StoreManager.products SET name = ? WHERE id = ?';
 
   const [product] = await connection.execute(query, [name, id]);
-  console.log(product);
 
   if (product.affectedRows === 0) return { message: 'Product not found', status: 404 };
 

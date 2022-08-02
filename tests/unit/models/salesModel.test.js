@@ -202,11 +202,7 @@ describe('Testes de salesModel', () => {
         expect(response).to.be.a('object');
       });
 
-      // it('com propriedades "id"', async () => {
-      //   const response = await salesModel.deleteSale(id);
 
-      //   expect(response).to.have.a.property('id');
-      // });
 
     })
   })
