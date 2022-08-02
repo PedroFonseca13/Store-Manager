@@ -6,7 +6,7 @@ const productsModel = require('../../../models/productsModel');
 
 describe('Testes de productsModel.', () => {
 
-  describe('Verificação da função getAll.', () => {
+  describe('Verificação da função (getAll / productsModel).', () => {
 
     before(async () => {
       const execute = [[{
@@ -43,7 +43,7 @@ describe('Testes de productsModel.', () => {
     });
   });
 
-  describe('Verificação da função findById', () => {
+  describe('Verificação da função (findById / productsModel)', () => {
 
     before(async () => {
       const result = [[{ id: 1 }]];
@@ -71,7 +71,7 @@ describe('Testes de productsModel.', () => {
     });
   });
 
-  describe('Verificação da função updateProduct', () => {
+  describe('Verificação da função (updateProduct / productsModel)', () => {
     const id = 1;
     const name = 'skunk';
     const quantity = 2;
@@ -94,16 +94,15 @@ describe('Testes de productsModel.', () => {
       expect(response).to.be.a('object');
     });
 
-    // it('Deve retornar um objeto com as propriedades "id", "name" e "quantity"', async () => {
-    //   const response = await productsModel.updateProduct(id, name, quantity);
+    it('Deve retornar um objeto com as propriedades "id", "name"', async () => {
+      const response = await productsModel.updateProduct(id, name);
 
-    //   expect(response).to.have.a.property('id');
-    //   expect(response).to.have.a.property('name');
-    //   expect(response).to.have.a.property('quantity');
-    // });
+      expect(response).to.have.a.property('id');
+      expect(response).to.have.a.property('name');
+    });
   });
 
-  describe('Verificação da função deleteProduct', () => {
+  describe('Verificação da função (deleteProduct / productsModel)', () => {
     const id = 1;
 
     before(() => {
@@ -122,10 +121,5 @@ describe('Testes de productsModel.', () => {
       const response = await productsModel.deleteProduct(id);
       expect(response).to.be.a('object');
     });
-
-    // it('com a propriedade "id"', async () => {
-    //   const response = await productsModel.deleteProduct(id);
-    //   expect(response).to.have.a.property('id');
-    // });
   })
 });

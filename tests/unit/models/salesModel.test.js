@@ -5,7 +5,7 @@ const salesModel = require('../../../models/salesModel');
 const connection = require('../../../models/connection');
 
 describe('Testes de salesModel', () => {
-  describe('Verificação da função getAll.', () => {
+  describe('Verificação da função (getAll / salesModel).', () => {
 
     before(() => {
       const execute = [[{
@@ -47,7 +47,7 @@ describe('Testes de salesModel', () => {
     })
   });
 
-  describe('Verificação da função findById', () => {
+  describe('Verificação da função (findById / salesModel).', () => {
     const saleId = 1;
 
     before(() => {
@@ -77,17 +77,17 @@ describe('Testes de salesModel', () => {
         expect(response).to.be.a('array');
       });
 
-      // it('de objetos com "date", "productId" e "quantity"', async () => {
-      //   const response = await salesModel.findById(saleId);
-
-      //   expect(response[0]).to.have.a.property('date');
-      //   expect(response[0]).to.have.a.property('productId');
-      //   expect(response[0]).to.have.a.property('quantity');
-      // });
+      it('de objetos com "date", "product_id" e "quantity"', async () => {
+        const response = await salesModel.findById(saleId);
+        console.log(response);
+        expect(response[0]).to.have.a.property('date');
+        expect(response[0]).to.have.a.property('product_id');
+        expect(response[0]).to.have.a.property('quantity');
+      });
     })
   });
 
-  describe('Cria vendas no DB sales', () => {
+  describe('Verifica a função(insertData / salesModel).', () => {
 
     before(() => {
       const execute = [{

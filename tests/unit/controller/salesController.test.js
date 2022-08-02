@@ -89,34 +89,30 @@ describe('Testes do salesController', () => {
   });
 
   describe('Testa a função (deleteSale / salesController).', () => {
+    const response = {};
+    const request = {};
+    request.params = { id: 1 }
 
-    describe('quando inserido corretamente', () => {
-      const response = {};
-      const request = {};
-      request.params = { id: 1 }
+    before(() => {
+      const execute = {
+        id: 1,
+      };
 
-      before(() => {
-        const execute = {
-          id: 1,
-        };
+      response.status = sinon.stub().returns(response);
 
-        response.status = sinon.stub().returns(response);
+      response.end = sinon.stub().returns();
 
-        response.end = sinon.stub().returns();
+      sinon.stub(salesService, 'deleteSale').resolves(execute);
+    });
 
-        sinon.stub(salesService, 'deleteSale').resolves(execute);
-      });
+    after(() => {
+      salesService.deleteSale.restore();
+    });
 
-      after(() => {
-        salesService.deleteSale.restore();
-      });
+    it('é chamado o código 204', async () => {
+      await salesController.deleteSale(request, response);
 
-      it('é chamado o código 204', async () => {
-        await salesController.deleteSale(request, response);
-
-        expect(response.status.calledWith(204)).to.be.equal(true);
-      });
-
+      expect(response.status.calledWith(204)).to.be.equal(true);
     });
   });
 });
