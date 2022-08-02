@@ -5,9 +5,9 @@ const productsService = require('../../../services/productsService');
 const productsController = require('../../../controllers/productsController');
 
 
-describe('Testes do controller', () => {
+describe('Testes do productsController', () => {
 
-  describe('Testa a função getAll', () => {
+  describe('Testa a função (getAll / productsController).', () => {
 
     const products = [
       {
@@ -34,149 +34,224 @@ describe('Testes do controller', () => {
       sinon.restore()
     })
 
-    it('Deve retornar um status 200', async () => {
+    it('Deve retornar um status 200.', async () => {
       await productsController.getAll(req, res);
       expect(res.status.calledWith(200)).to.be.equal(true);
       expect(res.json.calledWith(products)).to.be.equal(true);
     });
 
-    it('Deve retornar um json ', async () => {
-      await productsController.getAll(req, res, next);
+    it('Deve retornar um json com o array dos produtos.', async () => {
+      const t = await productsController.getAll(req, res);
       expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
     });
   });
 
-  describe('Test function findById', () => {
+  // describe('Testa a função (findById / productsController).', () => {
+  //   describe('quando existe o produto', () => {
 
-    const product = [
-      {
-        "id": 1,
-        "name": "Martelo de Thor",
-      }
-    ];
+  //     const res = {};
+  //     const req = {};
+  //     const product = { data: [{ id: 1 }], status: 200 };
+  //     const paramID = 1;
 
-    const res = {};
-    const req = {};
-    const next = () => { };
+  //     before(async () => {
+  //       req.params = sinon.stub().returns(paramID);
+  //       res.status = sinon.stub().returns(res);
+  //       res.json = sinon.stub().returns();
 
-    before(() => {
-      res.status = sinon.stub().returns(res)
-      res.json = sinon.stub().returns(product)
-      req.params = sinon.stub().returns(1)
+  //       sinon.stub(productsService, 'findById').resolves(product);
+  //     })
 
-      sinon.stub(productsService, 'findById').resolves(product);
-    })
+  //     after(async () => {
+  //       productsService.findById.restore()
+  //     })
 
-    after(() => {
-      sinon.restore()
-    })
+  //     it('Deve retornar um status 200', async () => {
+  //       await productsController.findById(req, res);
+  //       expect(res.status.calledWith(200)).to.be.equal(true);
+  //     });
 
-    it('Deve retornar um status 200', async () => {
-      await productsController.findById(req, res, next);
-      expect(res.status.calledWith(200)).to.be.equal(true);
-      expect(res.json.calledWith(product)).to.be.equal(true);
-    });
+  //     it('Deve retonar o produto correto', async () => {
+  //       await productsController.findById(req, res);
+  //       expect(res.json.calledWith(product)).to.equal(true);
+  //     });
+  //   });
 
-    it('Deve retonar um json', async () => {
-      await productsController.findById(req, res, next);
-      expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
-    });
-  });
+  //   describe('quando não existe o produto', () => {
 
-  describe('Testa a função registerProduct', () => {
-    const product = [
-      {
-        id: '1',
-        name: 'Martelo de Thor'
-      },
-    ];
+  //   });
+  // });
 
-    const req = {};
-    const res = {};
-    const next = () => { };
+  // describe('Testa a função (registerProduct / productsController).', () => {
+  //   describe('quando existe o produto', () => {
+  //     const product = [
+  //       {
+  //         id: '1',
+  //         name: 'Martelo de Thor'
+  //       },
+  //     ];
+
+  //     const req = {};
+  //     const res = {};
+  //     const next = () => { };
 
 
-    before(() => {
-      res.status = sinon.stub().returns(res)
-      res.json = sinon.stub().returns(product)
-      req.body = sinon.stub().returns()
+  //     before(() => {
+  //       res.status = sinon.stub().returns(res)
+  //       res.json = sinon.stub().returns(product)
+  //       req.body = sinon.stub().returns()
 
-      sinon.stub(productsService, 'registerProduct').resolves(product);
-    })
+  //       sinon.stub(productsService, 'registerProduct').resolves(product);
+  //     })
 
-    after(() => {
-      sinon.restore()
-    })
+  //     after(() => {
+  //       sinon.restore()
+  //     })
 
-    it('its called the with de status code 200', async () => {
-      await productsController.registerProduct(req, res)
-      expect(res.status.calledWith(201)).to.be.equal(true);
-      expect(res.json.calledWith(product)).to.be.equal(true);
-    })
-  });
+  //     it('Deve retornar um status 200', async () => {
+  //       await productsController.registerProduct(req, res)
+  //       expect(res.status.calledWith(201)).to.be.equal(true);
+  //       expect(res.json.calledWith(product)).to.be.equal(true);
+  //     })
+  //   });
+  // });
 
-  describe('Ao chamar o controller de deleteProduct', () => {
-    describe('quando não existe o produto', () => {
-      const response = {};
-      const request = {};
-      request.params = { id: 1 };
+  // describe('Testa a função (updateProduct / productsController).', () => {
+  //   describe('quando não existe o produto', () => {
+  //     const response = {};
+  //     const request = {};
+  //     request.body = { name: "produto", quantity: 100 };
+  //     request.params = { id: 1 };
 
-      before(() => {
-        const execute = false;
+  //     before(() => {
+  //       const execute = false;
 
-        response.status = sinon.stub().returns(response);
+  //       response.status = sinon.stub().returns(response);
 
-        response.json = sinon.stub().returns();
+  //       response.json = sinon.stub().returns();
 
-        sinon.stub(productsService, 'deleteProduct').throws({ status: 404, message: 'Product not found' });
-      });
+  //       sinon.stub(productsService, 'updateProduct').throws({ status: 404, message: 'Product not found' });
+  //     });
 
-      after(() => {
-        productsService.deleteProduct.restore();
-      });
+  //     after(() => {
+  //       productsService.updateProduct.restore();
+  //     });
 
-      it('é chamado o código 404', async () => {
-        await productsController.deleteProduct(request, response);
+  //     it('é chamado o código 404', async () => {
+  //       await productsController.updateProduct(request, response);
 
-        expect(response.status.calledWith(404)).to.be.equal(true);
-      });
+  //       expect(response.status.calledWith(404)).to.be.equal(true);
+  //     });
 
-      it('é chamado o objeto de erro', async () => {
-        await productsController.deleteProduct(request, response);
+  //     it('é chamado o objeto de erro', async () => {
+  //       await productsController.updateProduct(request, response);
 
-        expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
-      });
+  //       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+  //     });
 
-    });
+  //   });
 
-    describe('quando existe o produto', () => {
-      const response = {};
-      const request = {};
-      request.params = { id: 1 };
+  //   describe('quando existe o produto', () => {
+  //     const response = {};
+  //     const request = {};
+  //     request.body = { name: "Martelo de Thor", quantity: 10 };
+  //     request.params = { id: 1 };
 
-      before(() => {
-        const execute = {
-          id: 1,
-        };
+  //     before(() => {
+  //       const execute = {
+  //         id: 1,
+  //         name: "Martelo de Thor",
+  //         quantity: 10
+  //       };
 
-        response.status = sinon.stub().returns(response);
+  //       response.status = sinon.stub().returns(response);
 
-        response.end = sinon.stub().returns();
+  //       response.json = sinon.stub().returns();
 
-        sinon.stub(productsService, 'deleteProduct').resolves(execute);
-      });
+  //       sinon.stub(productsService, 'updateProduct').resolves(execute);
+  //     });
 
-      after(() => {
-        productsService.deleteProduct.restore();
-      });
+  //     after(() => {
+  //       productsService.updateProduct.restore();
+  //     });
 
-      it('é chamado o código 204', async () => {
-        await productsController.deleteProduct(request, response);
+  //     it('é chamado o código 200', async () => {
+  //       await productsController.updateProduct(request, response);
 
-        expect(response.status.calledWith(204)).to.be.equal(true);
-      });
+  //       expect(response.status.calledWith(200)).to.be.equal(true);
+  //     });
 
-    });
+  //     it('é chamado o json com o objeto do produto', async () => {
+  //       await productsController.updateProduct(request, response);
 
-  });
+  //       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+  //     });
+
+  //   });
+
+  // });
+
+  // describe('Testa a função (deleteProduct / productsController).', () => {
+  //   describe('quando não existe o produto', () => {
+  //     const response = {};
+  //     const request = {};
+  //     request.params = { id: 1 };
+
+  //     before(() => {
+  //       const execute = false;
+
+  //       response.status = sinon.stub().returns(response);
+
+  //       response.json = sinon.stub().returns();
+
+  //       sinon.stub(productsService, 'deleteProduct').throws({ status: 404, message: 'Product not found' });
+  //     });
+
+  //     after(() => {
+  //       productsService.deleteProduct.restore();
+  //     });
+
+  //     it('é chamado o código 404', async () => {
+  //       await productsController.deleteProduct(request, response);
+
+  //       expect(response.status.calledWith(404)).to.be.equal(true);
+  //     });
+
+  //     it('é chamado o objeto de erro', async () => {
+  //       await productsController.deleteProduct(request, response);
+
+  //       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+  //     });
+
+  //   });
+
+  //   describe('quando existe o produto', () => {
+  //     const response = {};
+  //     const request = {};
+  //     request.params = { id: 1 };
+
+  //     before(() => {
+  //       const execute = {
+  //         id: 1,
+  //       };
+
+  //       response.status = sinon.stub().returns(response);
+
+  //       response.end = sinon.stub().returns();
+
+  //       sinon.stub(productsService, 'deleteProduct').resolves(execute);
+  //     });
+
+  //     after(() => {
+  //       productsService.deleteProduct.restore();
+  //     });
+
+  //     it('é chamado o código 204', async () => {
+  //       await productsController.deleteProduct(request, response);
+
+  //       expect(response.status.calledWith(204)).to.be.equal(true);
+  //     });
+
+  //   });
+  // });
 });

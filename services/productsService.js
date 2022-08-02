@@ -30,12 +30,9 @@ const updateProduct = async (id, name) => {
 
   if (searchProduct.length === 0) throw errorHandler(404, 'Product not found');
 
-  await productsModel.updateProduct(id, name);
+  const updatedProduct = await productsModel.updateProduct(id, name);
 
-  return {
-    id,
-    name,
-  };
+  return updatedProduct;
 };
 
 const deleteProduct = async (id) => {

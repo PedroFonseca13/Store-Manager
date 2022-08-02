@@ -1,7 +1,7 @@
 const productsService = require('../services/productsService');
-// const errorHandler = require('../helpers/errorHandler');
+const errorHandler = require('../utils/handleError');
 
-const getAll = async (_req, res, next) => {
+const getAll = async (_req, res) => {
   try {
     const products = await productsService.getAll();
 
@@ -11,12 +11,12 @@ const getAll = async (_req, res, next) => {
     // }
 
     res.status(200).json(products);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    errorHandler(error, _req, res);
   }
 };
 
-const findById = async (req, res, next) => {
+const findById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productsService.findById(id);
@@ -28,7 +28,7 @@ const findById = async (req, res, next) => {
 
     return res.status(200).json(product);
   } catch (error) {
-    next(error);
+    errorHandler(error, req, res);
   }
 };
 

@@ -1,43 +1,48 @@
-// const sinon = require('sinon');
-// const salesService = require('../../../services/salesService');
-// const salesControllers = require('../../../controllers/salesController');
-// const { expect } = require('chai');
+const sinon = require('sinon');
+const salesService = require('../../../services/salesService');
+const salesController = require('../../../controllers/salesController');
+const { expect } = require('chai');
 
-// describe('Chamada de Post em "/sales"', () => {
+describe('Testes do salesController', () => {
+  describe('Testa a função (getAll / salesController).', () => {
+    const response = {};
+    const request = {};
 
+    before(async () => {
+      const execute = [{
+        saleId: 1,
+        date: "2021-09-09 00:45:23",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        saleId: 2,
+        date: "2021-09-09 00:45:23",
+        productId: 2,
+        quantity: 10,
+      }];
 
-//   const sales = {
-//     "id": 3,
-//     "itemsSold": [
-//       {
-//         "productId": 1,
-//         "quantity": 1
-//       },
-//       {
-//         "productId": 2,
-//         "quantity": 2
-//       }
-//     ]
-//   }
+      response.status = sinon.stub().returns(response);
 
+      response.json = sinon.stub().returns();
 
-//   const req = {}
-//   const res = {}
+      await sinon.stub(salesService, 'getAll').resolves(execute);
+    });
 
-//   before(() => {
-//     res.status = sinon.stub().returns(res);
-//     res.json = sinon.stub().returns(sales);
-//     sinon.stub(salesService, 'newSales').resolves(sales);
-//   })
+    after(async () => {
+      salesService.getAll.restore();
+    });
 
-//   after(() => {
-//     sinon.restore
-//   })
+    it('Deve retornar um status 200.', async () => {
+      await salesController.getAll(request, response);
 
-//   it('its called with code 201', async () => {
-//     await salesControllers.addSale(req, res);
-//     expect(res.status.calledWith(201)).to.be.equal(true);
-//     expect(res.json.calledWith(salesReturn)).to.be.equal(true);
-//   })
+      expect(response.status.calledWith(200)).to.be.equal(true);
+    });
 
-// });
+    it('é chamado o json com o array das vendas', async () => {
+      await salesController.getAll(request, response);
+
+      expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
+    });
+  });
+});
