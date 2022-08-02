@@ -25,12 +25,13 @@ const registerProduct = async (name) => {
   };
 };
 
-const updateProduct = async (id, name) => {
+const updateProduct = async (id, name, quantity) => {
   const searchProduct = await productsModel.findById(id);
+  console.log(searchProduct);
 
   if (searchProduct.length === 0) throw errorHandler(404, 'Product not found');
 
-  const updatedProduct = await productsModel.updateProduct(id, name);
+  const updatedProduct = await productsModel.updateProduct(id, name, quantity);
 
   return updatedProduct;
 };

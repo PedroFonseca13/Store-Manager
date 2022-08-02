@@ -4,9 +4,9 @@ const sinon = require('sinon');
 const productsModel = require('../../../models/productsModel');
 const productsService = require('../../../services/productsService');
 
-describe('Test layer services', () => {
+describe('Teste de productsService', () => {
 
-  describe('Verifica se a funcção getAll lista todos os produtos', () => {
+  describe('Verifica se a função getAll lista todos os produtos', () => {
 
     const products = [
       {
@@ -20,7 +20,7 @@ describe('Test layer services', () => {
     ];
 
     before(async () => {
-      sinon.stub(productsModel, 'getAll').returns([[products]])
+      sinon.stub(productsModel, 'getAll').returns(products)
     });
 
     after(() =>
@@ -31,6 +31,13 @@ describe('Test layer services', () => {
       const result = await productsService.getAll()
       expect(result).to.be.an('array')
     })
+
+    it('de objetos com propriedades "id", "name" e "quantity"', async () => {
+      const response = await productsService.getAll();
+      expect(response[0]).to.have.a.property('id');
+      expect(response[0]).to.have.a.property('name');
+      expect(response[0]).to.have.a.property('quantity');
+    });
 
   });
 
@@ -178,68 +185,38 @@ describe('Test layer services', () => {
   //   });
   // });
 
-  // describe('Deleta um produto no DB', () => {
-  //   describe('quando não existe o produto', () => {
-  //     const id = 1;
+  describe('Deleta um produto no DB', () => {
+    const id = 1;
 
-  //     before(() => {
-  //       const execute = undefined;
+    before(() => {
+      const execute = {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10
+      };
+      const execute1 = {
+        id: 1,
+      };
 
-  //       sinon.stub(productsModel, 'findById').resolves(execute);
-  //     });
+      sinon.stub(productsModel, 'findById').resolves(execute);
+      sinon.stub(productsModel, 'deleteProduct').resolves(execute1);
+    });
 
-  //     after(() => {
-  //       productsModel.findById.restore();
-  //     });
+    after(() => {
+      productsModel.findById.restore();
+      productsModel.deleteProduct.restore();
+    });
 
-  //     it('retorna um boolean', async () => {
-  //       const response = await productsService.deleteProduct(id);
+    it('retorna um objeto', async () => {
+      const response = await productsService.deleteProduct(id);
 
-  //       expect(response).to.be.a('boolean');
-  //     });
+      expect(response).to.be.a('object');
+    });
 
-  //     it('o boolean contém "false"', async () => {
-  //       const response = await productsService.deleteProduct(id);
+    it('com propriedades "id", "name" e "quantity"', async () => {
+      const response = await productsService.deleteProduct(id);
 
-  //       expect(response).to.be.equal(false);
-  //     });
-
-  //   });
-
-  //   describe('quando o produto existe', () => {
-  //     const id = 1;
-
-  //     before(() => {
-  //       const execute = {
-  //         id: 1,
-  //         name: "Martelo de Thor",
-  //         quantity: 10
-  //       };
-  //       const execute1 = {
-  //         id: 1,
-  //       };
-
-  //       sinon.stub(productsModel, 'findById').resolves(execute);
-  //       sinon.stub(productsModel, 'deleteProduct').resolves(execute1);
-  //     });
-
-  //     after(() => {
-  //       productsModel.findById.restore();
-  //       productsModel.deleteProduct.restore();
-  //     });
-
-  //     it('retorna um objeto', async () => {
-  //       const response = await productsService.deleteProduct(id);
-
-  //       expect(response).to.be.a('object');
-  //     });
-
-  //     it('com propriedades "id", "name" e "quantity"', async () => {
-  //       const response = await productsService.deleteProduct(id);
-
-  //       expect(response).to.have.a.property('id');
-  //     });
-
-  //   });
-  // });
+      expect(response).to.have.a.property('id');
+    });
+  });
 })
