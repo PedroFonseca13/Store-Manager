@@ -114,4 +114,69 @@ describe('Testes do controller', () => {
       expect(res.json.calledWith(product)).to.be.equal(true);
     })
   });
+
+  describe('Ao chamar o controller de deleteProduct', () => {
+    describe('quando não existe o produto', () => {
+      const response = {};
+      const request = {};
+      request.params = { id: 1 };
+
+      before(() => {
+        const execute = false;
+
+        response.status = sinon.stub().returns(response);
+
+        response.json = sinon.stub().returns();
+
+        sinon.stub(productsService, 'deleteProduct').throws({ status: 404, message: 'Product not found' });
+      });
+
+      after(() => {
+        productsService.deleteProduct.restore();
+      });
+
+      it('é chamado o código 404', async () => {
+        await productsController.deleteProduct(request, response);
+
+        expect(response.status.calledWith(404)).to.be.equal(true);
+      });
+
+      it('é chamado o objeto de erro', async () => {
+        await productsController.deleteProduct(request, response);
+
+        expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+      });
+
+    });
+
+    describe('quando existe o produto', () => {
+      const response = {};
+      const request = {};
+      request.params = { id: 1 };
+
+      before(() => {
+        const execute = {
+          id: 1,
+        };
+
+        response.status = sinon.stub().returns(response);
+
+        response.end = sinon.stub().returns();
+
+        sinon.stub(productsService, 'deleteProduct').resolves(execute);
+      });
+
+      after(() => {
+        productsService.deleteProduct.restore();
+      });
+
+      it('é chamado o código 204', async () => {
+        await productsController.deleteProduct(request, response);
+
+        expect(response.status.calledWith(204)).to.be.equal(true);
+      });
+
+    });
+
+  });
 });

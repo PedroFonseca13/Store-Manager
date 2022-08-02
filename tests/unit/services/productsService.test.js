@@ -105,4 +105,141 @@ describe('Test layer services', () => {
     })
   });
 
+  describe('Edita um produto no DB', () => {
+    describe('quando não existe o produto', () => {
+      const id = 1;
+      const name = 'algo';
+      const quantity = 2;
+
+      before(() => {
+        const execute = undefined;
+
+        sinon.stub(productsModel, 'findById').resolves(execute);
+      });
+
+      after(() => {
+        productsModel.findById.restore();
+      });
+
+      it('retorna um boolean', async () => {
+        const response = await productsService.updateProduct(id, name, quantity);
+
+        expect(response).to.be.a('boolean');
+      });
+
+      it('o boolean contém "false"', async () => {
+        const response = await productsService.updateProduct(id, name, quantity);
+
+        expect(response).to.be.equal(false);
+      });
+
+    });
+
+    describe('quando o produto existe', () => {
+      const id = 1;
+      const name = 'algo';
+      const quantity = 2;
+
+      before(() => {
+        const execute = {
+          id: 4,
+          name: "algo",
+          quantity: 2
+        };
+        const execute1 = {
+          id: 4,
+          name: "algo",
+          quantity: 2
+        }
+
+        sinon.stub(productsModel, 'findById').resolves(execute);
+        sinon.stub(productsModel, 'edit').resolves(execute1);
+      });
+
+      after(() => {
+        productsModel.findById.restore();
+        productsModel.updateProduct.restore();
+      });
+
+      it('retorna um objeto', async () => {
+        const response = await productsService.updateProduct(id, name, quantity);
+
+        expect(response).to.be.a('object');
+      });
+
+      it('com propriedades "id", "name" e "quantity"', async () => {
+        const response = await productsService.updateProduct(id, name, quantity);
+
+        expect(response).to.have.a.property('id');
+        expect(response).to.have.a.property('name');
+        expect(response).to.have.a.property('quantity');
+      });
+
+    });
+  });
+
+  describe('Deleta um produto no DB', () => {
+    describe('quando não existe o produto', () => {
+      const id = 1;
+
+      before(() => {
+        const execute = undefined;
+
+        sinon.stub(productsModel, 'findById').resolves(execute);
+      });
+
+      after(() => {
+        productsModel.findById.restore();
+      });
+
+      it('retorna um boolean', async () => {
+        const response = await productsService.deleteProduct(id);
+
+        expect(response).to.be.a('boolean');
+      });
+
+      it('o boolean contém "false"', async () => {
+        const response = await productsService.deleteProduct(id);
+
+        expect(response).to.be.equal(false);
+      });
+
+    });
+
+    describe('quando o produto existe', () => {
+      const id = 1;
+
+      before(() => {
+        const execute = {
+          id: 1,
+          name: "Martelo de Thor",
+          quantity: 10
+        };
+        const execute1 = {
+          id: 1,
+        };
+
+        sinon.stub(productsModel, 'findById').resolves(execute);
+        sinon.stub(productsModel, 'deleteProduct').resolves(execute1);
+      });
+
+      after(() => {
+        productsModel.findById.restore();
+        productsModel.deleteProduct.restore();
+      });
+
+      it('retorna um objeto', async () => {
+        const response = await productsService.deleteProduct(id);
+
+        expect(response).to.be.a('object');
+      });
+
+      it('com propriedades "id", "name" e "quantity"', async () => {
+        const response = await productsService.deleteProduct(id);
+
+        expect(response).to.have.a.property('id');
+      });
+
+    });
+  });
 })

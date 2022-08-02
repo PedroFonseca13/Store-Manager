@@ -87,6 +87,37 @@ describe('Testes de salesModel', () => {
     })
   });
 
+  describe('Cria vendas no DB sales', () => {
+
+    before(() => {
+      const execute = [{
+        insertId: 1,
+      }];
+
+      sinon.stub(connection, 'execute').resolves(execute);
+    })
+
+    after(() => {
+      connection.execute.restore();
+    })
+
+    describe('quando é inserido com sucesso', async () => {
+
+      it('retorna um objeto', async () => {
+        const response = await salesModel.insertData();
+
+        expect(response).to.be.a('object');
+      });
+
+      it('com a propriedade "id"', async () => {
+        const response = await salesModel.insertData();
+
+        expect(response).to.have.a.property('id');
+      });
+
+    })
+  })
+
   describe('Verifica a função de create em salesModel', () => {
     const sales = [
       {
@@ -112,4 +143,71 @@ describe('Testes de salesModel', () => {
       expect(result).to.be.a('object');
     })
   });
+
+  describe('Atualiza vendas no DB sales_products', () => {
+    const id = 1;
+    const product_id = 1;
+    const quantity = 5;
+
+    before(() => {
+      const execute = [{
+        affectedRow: 1,
+      }];
+
+      sinon.stub(connection, 'execute').resolves(execute);
+    })
+
+    after(() => {
+      connection.execute.restore();
+    })
+
+    describe('quando é inserido com sucesso', async () => {
+
+      it('retorna um objeto', async () => {
+        const response = await salesModel.updateSales(id, product_id, quantity);
+
+        expect(response).to.be.a('object');
+      });
+
+      it('com propriedades "productId" e "quantity"', async () => {
+        const response = await salesModel.updateSales(id, product_id, quantity);
+
+        expect(response).to.have.a.property('productId');
+        expect(response).to.have.a.property('quantity');
+      });
+
+    })
+  })
+
+  describe('Deleta vendas no DB sales', () => {
+    const id = 1;
+
+    before(() => {
+      const execute = [{
+        affectedRow: 1,
+      }];
+
+      sinon.stub(connection, 'execute').resolves(execute);
+    })
+
+    after(() => {
+      connection.execute.restore();
+    })
+
+    describe('quando é inserido com sucesso', async () => {
+
+      it('retorna um objeto', async () => {
+        const response = await salesModel.deleteSale(id);
+
+        expect(response).to.be.a('object');
+      });
+
+      it('com propriedades "id"', async () => {
+        const response = await salesModel.deleteSale(id);
+
+        expect(response).to.have.a.property('id');
+      });
+
+    })
+  })
 })
