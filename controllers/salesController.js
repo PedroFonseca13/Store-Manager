@@ -15,7 +15,6 @@ const findById = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await salesService.findById(id);
-    console.log(product);
 
     if (product.length === 0) return res.status(404).json({ message: 'Sale not found' });
     return res.status(200).json(product);
@@ -28,8 +27,6 @@ const addSale = async (req, res, next) => {
   try {
     const sale = req.body;
     const saleData = await salesService.newSales(sale);
-
-    console.log(saleData);
 
     if (saleData.error) {
       res.status(404).json({ message: 'Product not found' });

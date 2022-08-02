@@ -59,8 +59,6 @@ const updateSales = async (id, sales) => {
 
   const saleId = await salesModel.findById(id);
 
-  console.log(saleId);
-
   if (saleId.length === 0) return { error: { code: 'notFound', message: 'Sale not found' } };
 
   await Promise.all(sales.map((sale) => salesModel.updateSales(id, sale.productId, sale.quantity)));
@@ -69,8 +67,6 @@ const updateSales = async (id, sales) => {
     saleId: id,
     itemsUpdated: sales,
   };
-
-  console.log(dataObj);
 
   return dataObj;
 };

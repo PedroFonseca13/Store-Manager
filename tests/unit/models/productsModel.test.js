@@ -71,38 +71,6 @@ describe('Testes de productsModel.', () => {
     });
   });
 
-  // describe('Verificação da função registerProduct', () => {
-  //   const MOCK_NAME = 'Steve Rogers'
-  //   const MOCK_ID = 1
-
-  //   before(async () => {
-  //     const result = [{ insertId: MOCK_ID }];
-  //     sinon.stub(connection, 'execute').resolves(result);
-  //   });
-  //   after(async () => {
-  //     connection.execute.restore();
-  //   });
-
-  //   it('Deve retornar um array', async () => {
-  //     const response = await productsModel.registerProduct(MOCK_NAME);
-  //     expect(response).to.be.an('array');
-  //   });
-  //   it('Dentro do array, deve haver um objeto.', async () => {
-  //     const response = await productsModel.registerProduct(MOCK_NAME);
-  //     expect(response[0]).to.be.an('object');
-  //   });
-  //   it('Dentro do objeto, deve haver a propriedade "id".', async () => {
-  //     const response = await productsModel.registerProduct(MOCK_NAME);
-  //     expect(response[0]).to.have.property('id');
-  //     expect(response[0].id).to.be.equal(MOCK_ID);
-  //   });
-  //   it('Dentro do objeto, deve haver a propriedade "name".', async () => {
-  //     const response = await productsModel.registerProduct(MOCK_NAME);
-  //     expect(response[0]).to.have.property('name');
-  //     expect(response[0].name).to.be.equal(MOCK_NAME);
-  //   });
-  // });
-
   describe('Verificação da função updateProduct', () => {
     const id = 1;
     const name = 'skunk';

@@ -36,14 +36,14 @@ describe('Testes de salesModel', () => {
         expect(response).to.be.a('array');
       });
 
-      // it('de objetos com "saleId", "date", "productId" e "quantity"', async () => {
-      //   const response = await salesModel.getAll();
-
-      //   expect(response[0]).to.have.a.property('saleId');
-      //   expect(response[0]).to.have.a.property('date');
-      //   expect(response[0]).to.have.a.property('productId');
-      //   expect(response[0]).to.have.a.property('quantity');
-      // });
+      it('de objetos com "saleId", "date", "productId" e "quantity"', async () => {
+        const response = await salesModel.getAll();
+        // console.log(response);
+        expect(response[0]).to.have.a.property('sale_id');
+        expect(response[0]).to.have.a.property('date');
+        expect(response[0]).to.have.a.property('product_id');
+        expect(response[0]).to.have.a.property('quantity');
+      });
     })
   });
 
@@ -168,14 +168,6 @@ describe('Testes de salesModel', () => {
 
         expect(response).to.be.a('object');
       });
-
-      // it('com propriedades "productId" e "quantity"', async () => {
-      //   const response = await salesModel.updateSales(id, product_id, quantity);
-
-      //   expect(response).to.have.a.property('productId');
-      //   expect(response).to.have.a.property('quantity');
-      // });
-
     })
   })
 
@@ -201,9 +193,6 @@ describe('Testes de salesModel', () => {
 
         expect(response).to.be.a('object');
       });
-
-
-
     })
   })
 })

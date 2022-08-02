@@ -27,7 +27,6 @@ const registerProduct = async (name) => {
 
 const updateProduct = async (id, name, quantity) => {
   const searchProduct = await productsModel.findById(id);
-  console.log(searchProduct);
 
   if (searchProduct.length === 0) throw errorHandler(404, 'Product not found');
 
